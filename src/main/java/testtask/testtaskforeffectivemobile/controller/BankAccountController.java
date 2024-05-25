@@ -10,7 +10,7 @@ import testtask.testtaskforeffectivemobile.utils.UserUtils;
 @RequestMapping("/api/bankAccount")
 @AllArgsConstructor
 public class BankAccountController {
-    private final UserService userService;
-    private final UserUtils userUtils;
-    private static final String CURRENT_USER = "@userUtils.getCurrentUser().getId() == #id";
+//    private final UserService userService;
+//    private final UserUtils userUtils;
+//    private static final String CURRENT_USER = "@userUtils.getCurrentUser().getId() == #id";
 }

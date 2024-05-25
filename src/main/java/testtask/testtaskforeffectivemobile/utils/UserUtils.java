@@ -16,7 +16,7 @@ public class UserUtils {
         if (authentication == null || !authentication.isAuthenticated()) {
             return null;
         }
-        var email = authentication.getName();
-        return userRepository.findByEmail(email).get();
+        var login = authentication.getName();
+        return userRepository.findByLogin(login).get();
     }
 }
