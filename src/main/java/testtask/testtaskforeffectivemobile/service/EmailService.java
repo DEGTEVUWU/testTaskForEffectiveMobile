@@ -11,6 +11,7 @@ import testtask.testtaskforeffectivemobile.model.Email;
 import testtask.testtaskforeffectivemobile.model.User;
 import testtask.testtaskforeffectivemobile.repository.EmailRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,5 +43,20 @@ public class EmailService {
         Email emailModel = emailMapper.toModel(email);
         emailRepository.save(emailModel);
         return emailMapper.toDTO(emailModel);
+    }
+
+    public List<EmailDTO> getAll() {
+        var emails = emailRepository.findAll();
+        var result = emails.stream()
+            .map(emailMapper::toDTO)
+            .toList();
+        return result;
+    }
+
+    public EmailDTO findById(Long id) {
+        var email = emailRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Email with id " + id + " not found!"));
+        var emailDTO = emailMapper.toDTO(email);
+        return emailDTO;
     }
 }

@@ -140,7 +140,7 @@ public class UserService implements UserDetailsManager {
     public void deletePhoneNumber(Long userId, String phoneNumberValue) {
         PhoneNumber phoneNumber = phoneNumberRepository.findByPhoneNumber(phoneNumberValue)
             .orElseThrow(() -> new ResourceNotFoundException("PhoneNumber not found"));
-        deletePhoneNumber(userId, phoneNumber.getPhoneNumber());
+        deletePhoneNumber(userId, phoneNumber.getId());
     }
 
     public void deletePhoneNumber(Long userId, Long phoneNumberId) {

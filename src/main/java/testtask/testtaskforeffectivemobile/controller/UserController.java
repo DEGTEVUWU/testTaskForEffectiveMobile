@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import testtask.testtaskforeffectivemobile.dto.user.UserCreateDTO;
@@ -80,35 +81,35 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{userId}/phone-numbers/{phoneNumberId}")
-//    @PreAuthorize(CURRENT_USER)
-    public ResponseEntity<?> deletePhoneNumber(@PathVariable Long userId,
+    @DeleteMapping("/{id}/phone-numbers/{phoneNumberId}")
+    @PreAuthorize(CURRENT_USER)
+    public ResponseEntity<?> deletePhoneNumber(@PathVariable Long id,
                                                @PathVariable Long phoneNumberId) {
-        userService.deletePhoneNumber(userId, phoneNumberId);
+        userService.deletePhoneNumber(id, phoneNumberId);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{userId}/emails/{emailId}")
-//    @PreAuthorize(CURRENT_USER)
-    public ResponseEntity<?> deleteEmail(@PathVariable Long userId,
+    @DeleteMapping("/{id}/emails/{emailId}")
+    @PreAuthorize(CURRENT_USER)
+    public ResponseEntity<?> deleteEmail(@PathVariable Long id,
                                          @PathVariable Long emailId) {
-        userService.deleteEmail(userId, emailId);
+        userService.deleteEmail(id, emailId);
         return ResponseEntity.ok().build();
     }
 
-//    @DeleteMapping("/{userId}/phone-numbers")
-//    @PreAuthorize(CURRENT_USER)
-//    public ResponseEntity<?> deletePhoneNumber(@PathVariable Long userId,
-//                                               @PathVariable String phoneNumberValue) {
-//        userService.deletePhoneNumber(userId, phoneNumberValue);
-//        return ResponseEntity.ok().build();
-//    }
-//
-//    @DeleteMapping("/{userId}/emails")
-//    @PreAuthorize(CURRENT_USER)
-//    public ResponseEntity<?> deleteEmail(@PathVariable Long userId,
-//                                         @PathVariable String emailValue) {
-//        userService.deleteEmail(userId, emailValue);
-//        return ResponseEntity.ok().build();
-//    }
+    @DeleteMapping("/{id}/phone-numbers")
+    @PreAuthorize(CURRENT_USER)
+    public ResponseEntity<?> deletePhoneNumber(@PathVariable Long id,
+                                               @RequestParam String phoneNumberValue) {
+        userService.deletePhoneNumber(id, phoneNumberValue);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}/emails")
+    @PreAuthorize(CURRENT_USER)
+    public ResponseEntity<?> deleteEmail(@PathVariable Long id,
+                                         @RequestParam String emailValue) {
+        userService.deleteEmail(id, emailValue);
+        return ResponseEntity.ok().build();
+    }
 }
