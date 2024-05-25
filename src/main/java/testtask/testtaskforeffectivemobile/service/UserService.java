@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import testtask.testtaskforeffectivemobile.dto.user.UserCreateDTO;
 import testtask.testtaskforeffectivemobile.dto.user.UserDTO;
 import testtask.testtaskforeffectivemobile.dto.user.UserUpdateDTO;
+import testtask.testtaskforeffectivemobile.exeption.LastEmailContactException;
 import testtask.testtaskforeffectivemobile.exeption.LoginAlreadyExistsException;
 import testtask.testtaskforeffectivemobile.exeption.PhoneNumberAlreadyExistsException;
 import testtask.testtaskforeffectivemobile.exeption.ResourceNotFoundException;
@@ -19,6 +20,8 @@ import testtask.testtaskforeffectivemobile.mapper.UserMapper;
 import testtask.testtaskforeffectivemobile.model.Email;
 import testtask.testtaskforeffectivemobile.model.PhoneNumber;
 import testtask.testtaskforeffectivemobile.model.User;
+import testtask.testtaskforeffectivemobile.repository.EmailRepository;
+import testtask.testtaskforeffectivemobile.repository.PhoneNumberRepository;
 import testtask.testtaskforeffectivemobile.repository.UserRepository;
 
 import java.util.List;
@@ -29,6 +32,8 @@ import java.util.Set;
 @AllArgsConstructor
 public class UserService implements UserDetailsManager {
     private final UserRepository userRepository;
+    private final EmailRepository emailRepository;
+    private final PhoneNumberRepository phoneNumberRepository;
     private final UserMapper userMapper;
     private final EmailMapper emailMapper;
     private final PhoneNumberMapper phoneNumberMapper;
@@ -111,6 +116,43 @@ public class UserService implements UserDetailsManager {
 
     public void delete(Long id) {
         userRepository.deleteById(id);
+    }
+
+
+    public void deleteEmail(Long userId, String emailValue) {
+        Email email = emailRepository.findByEmail(emailValue)
+            .orElseThrow(() -> new ResourceNotFoundException("Email not found"));
+        deleteEmail(userId, email.getId());
+    }
+    public void deleteEmail(Long userId, Long emailId) {
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        if (user.getEmail().size() > 1) {
+            user.getEmail().removeIf(email -> email.getId().equals(emailId));
+        } else {
+            throw new LastEmailContactException(emailId);
+        }
+        emailRepository.deleteById(emailId);
+        userRepository.save(user);
+    }
+
+
+    public void deletePhoneNumber(Long userId, String phoneNumberValue) {
+        PhoneNumber phoneNumber = phoneNumberRepository.findByPhoneNumber(phoneNumberValue)
+            .orElseThrow(() -> new ResourceNotFoundException("PhoneNumber not found"));
+        deletePhoneNumber(userId, phoneNumber.getPhoneNumber());
+    }
+
+    public void deletePhoneNumber(Long userId, Long phoneNumberId) {
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        if (user.getPhoneNumber().size() > 1) {
+            user.getPhoneNumber().removeIf(phoneNumber -> phoneNumber.getId().equals(phoneNumberId));
+        } else {
+            throw new LastEmailContactException(phoneNumberId);
+        }
+        phoneNumberRepository.deleteById(phoneNumberId);
+        userRepository.save(user);
     }
 
     private void createDependencies(UserCreateDTO userCreateDTO) {

@@ -65,6 +65,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
     @PatchMapping(path = "/{id}")
+    @PreAuthorize(CURRENT_USER)
     public ResponseEntity<UserDTO> updateUserContactInfo(@PathVariable Long id,
                                                          @RequestBody UserUpdateDTO userUpdateDTO) {
         UserDTO user = userService.updateUserContactInfo(id, userUpdateDTO);
@@ -78,4 +79,36 @@ public class UserController {
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/{userId}/phone-numbers/{phoneNumberId}")
+//    @PreAuthorize(CURRENT_USER)
+    public ResponseEntity<?> deletePhoneNumber(@PathVariable Long userId,
+                                               @PathVariable Long phoneNumberId) {
+        userService.deletePhoneNumber(userId, phoneNumberId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{userId}/emails/{emailId}")
+//    @PreAuthorize(CURRENT_USER)
+    public ResponseEntity<?> deleteEmail(@PathVariable Long userId,
+                                         @PathVariable Long emailId) {
+        userService.deleteEmail(userId, emailId);
+        return ResponseEntity.ok().build();
+    }
+
+//    @DeleteMapping("/{userId}/phone-numbers")
+//    @PreAuthorize(CURRENT_USER)
+//    public ResponseEntity<?> deletePhoneNumber(@PathVariable Long userId,
+//                                               @PathVariable String phoneNumberValue) {
+//        userService.deletePhoneNumber(userId, phoneNumberValue);
+//        return ResponseEntity.ok().build();
+//    }
+//
+//    @DeleteMapping("/{userId}/emails")
+//    @PreAuthorize(CURRENT_USER)
+//    public ResponseEntity<?> deleteEmail(@PathVariable Long userId,
+//                                         @PathVariable String emailValue) {
+//        userService.deleteEmail(userId, emailValue);
+//        return ResponseEntity.ok().build();
+//    }
 }

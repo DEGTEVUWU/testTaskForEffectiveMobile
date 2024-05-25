@@ -39,7 +39,7 @@ public class PhoneNumberService {
     }
 
     public PhoneNumberDTO addPhoneNumber(String phoneNumber) {
-        if(phoneNumberRepository.existsByPhoneNumber(phoneNumber)) {
+        if(phoneNumberRepository.findByPhoneNumber(phoneNumber).isPresent()) {
             throw new DataIntegrityViolationException("PhoneNumber is already in use: " + phoneNumber);
         }
         PhoneNumber phoneNumberModel = phoneNumberMapper.toModel(phoneNumber);
