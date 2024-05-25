@@ -10,4 +10,6 @@ import java.util.Set;
 public interface PhoneNumberRepository extends JpaRepository<PhoneNumber, Long> {
     Set<PhoneNumber> findByPhoneNumberIn(Set<String> phoneNumbers);
     Optional<PhoneNumber> findByPhoneNumber(String phoneNumber);
+    boolean existsByPhoneNumber(String phoneNumber);
+
 }

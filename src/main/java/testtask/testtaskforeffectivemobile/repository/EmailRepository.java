@@ -9,4 +9,6 @@ import java.util.Set;
 public interface EmailRepository extends JpaRepository<Email, Long> {
     Set<Email> findByEmailIn(Set<String> emails);
     Optional<Email> findByEmail(String email);
+    boolean existsByEmail(String email);
+
 }

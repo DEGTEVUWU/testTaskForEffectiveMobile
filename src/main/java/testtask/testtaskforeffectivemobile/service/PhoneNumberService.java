@@ -1,6 +1,7 @@
 package testtask.testtaskforeffectivemobile.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import testtask.testtaskforeffectivemobile.dto.email.EmailDTO;
@@ -27,7 +28,7 @@ public class PhoneNumberService {
             .map(p -> {
                 Optional<PhoneNumber> existingPhoneNumber = phoneNumberRepository.findByPhoneNumber(p);
                 if (existingPhoneNumber.isPresent()) {
-                    throw new PhoneNumberAlreadyExistsException("PhoneNUmber already exists: " + p);
+                    throw new PhoneNumberAlreadyExistsException("PhoneNumber already exists: " + p);
                 }
                 PhoneNumber phoneNumber = new PhoneNumber();
                 phoneNumber.setPhoneNumber(p);
@@ -35,5 +36,14 @@ public class PhoneNumberService {
                 return phoneNumberMapper.toDTO(phoneNumber);
             })
             .collect(Collectors.toSet());
+    }
+
+    public PhoneNumberDTO addPhoneNumber(String phoneNumber) {
+        if(phoneNumberRepository.existsByPhoneNumber(phoneNumber)) {
+            throw new DataIntegrityViolationException("PhoneNumber is already in use: " + phoneNumber);
+        }
+        PhoneNumber phoneNumberModel = phoneNumberMapper.toModel(phoneNumber);
+        phoneNumberRepository.save(phoneNumberModel);
+        return phoneNumberMapper.toDTO(phoneNumberModel);
     }
 }

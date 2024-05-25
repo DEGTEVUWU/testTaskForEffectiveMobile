@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -61,6 +62,12 @@ public class UserController {
     @PreAuthorize(CURRENT_USER)
     public ResponseEntity<UserDTO> update(@RequestBody @Valid UserUpdateDTO userData, @PathVariable Long id) {
         UserDTO user = userService.update(userData, id);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+    @PatchMapping(path = "/{id}")
+    public ResponseEntity<UserDTO> updateUserContactInfo(@PathVariable Long id,
+                                                         @RequestBody UserUpdateDTO userUpdateDTO) {
+        UserDTO user = userService.updateUserContactInfo(id, userUpdateDTO);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 

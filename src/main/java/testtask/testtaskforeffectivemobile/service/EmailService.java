@@ -1,12 +1,14 @@
 package testtask.testtaskforeffectivemobile.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import testtask.testtaskforeffectivemobile.dto.email.EmailDTO;
 import testtask.testtaskforeffectivemobile.exeption.EmailAlreadyExistsException;
 import testtask.testtaskforeffectivemobile.exeption.ResourceNotFoundException;
 import testtask.testtaskforeffectivemobile.mapper.EmailMapper;
 import testtask.testtaskforeffectivemobile.model.Email;
+import testtask.testtaskforeffectivemobile.model.User;
 import testtask.testtaskforeffectivemobile.repository.EmailRepository;
 
 import java.util.Optional;
@@ -32,5 +34,13 @@ public class EmailService {
                 return emailMapper.toDTO(email);
             })
             .collect(Collectors.toSet());
+    }
+    public EmailDTO addEmail(String email) {
+        if(emailRepository.findByEmail(email).isPresent()) {
+            throw new DataIntegrityViolationException("Email is already in use: " + email);
+        }
+        Email emailModel = emailMapper.toModel(email);
+        emailRepository.save(emailModel);
+        return emailMapper.toDTO(emailModel);
     }
 }
