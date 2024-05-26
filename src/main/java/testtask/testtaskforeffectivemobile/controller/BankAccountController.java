@@ -18,8 +18,4 @@ import testtask.testtaskforeffectivemobile.utils.UserUtils;
 @AllArgsConstructor
 @Slf4j
 public class BankAccountController {
-    private final BankAccountService bankAccountService;
-    private final UserUtils userUtils;
-    private static final String CURRENT_USER = "@userUtils.getCurrentUser().getId() == #id";
-
 }

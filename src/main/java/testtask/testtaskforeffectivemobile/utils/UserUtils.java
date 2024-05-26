@@ -9,7 +9,6 @@ import testtask.testtaskforeffectivemobile.repository.UserRepository;
 
 @Component
 @AllArgsConstructor
-@Slf4j
 public class UserUtils {
     private final UserRepository userRepository;
 

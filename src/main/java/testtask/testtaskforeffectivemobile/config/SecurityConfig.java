@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import testtask.testtaskforeffectivemobile.service.UserService;
 
@@ -43,6 +44,9 @@ public class SecurityConfig {
                 .requestMatchers(mvcMatcherBuilder.pattern("/")).permitAll()
                 .requestMatchers(mvcMatcherBuilder.pattern("/index.html")).permitAll()
                 .requestMatchers(mvcMatcherBuilder.pattern("/assets/**")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern("/swagger-ui.html")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern("/swagger-ui/**")).permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/v3/**")).permitAll()
                 // .requestMatchers(mvcMatcherBuilder.pattern("/api/**")).permitAll()
                 .anyRequest().authenticated())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

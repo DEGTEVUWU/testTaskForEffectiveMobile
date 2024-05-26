@@ -36,14 +36,14 @@ public class User implements BaseEntity, UserDetails {
     private LocalDate birthDate;
 
     @Column(unique = true)
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private Set<Email> email;
 
     @Column(unique = true)
     private String login;
 
     @Column(unique = true)
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private Set<PhoneNumber> phoneNumber;
 
     @Column(nullable = false)
@@ -52,7 +52,7 @@ public class User implements BaseEntity, UserDetails {
     @CreatedDate
     private LocalDate createdAt;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private BankAccount bankAccount;
 
 
