@@ -20,3 +20,67 @@
 - добавлено логгирование с помощью slf4j в основные классы, сделано неск. лог-заглушек для демонстрации работы логгера
 - добавлен сваггер в проект для создания и ведения api-документации, доступно в html-формате по адресу localhost:8080/swagger-ui/index.html
 - добавлено тестирование на функционал трансфера денег
+
+
+### Использование локально ###
+##### В терминале: #####
+```
+git clone git@github.com:DEGTEVUWU/testTaskForEffectiveMobile.git
+cd testTaskForEffectiveMobile
+make spring 
+```
+##### В командной строке: #####
+Для заведения нового юзера
+```
+curl -X POST "http://localhost:8080/api/users" \
+    -H "Content-Type: application/json" \
+    -d '{
+        "login": "login",
+        "password": "password",
+        "balance": 100.00,
+        "phoneNumber": ["12345"],
+        "email": ["email@email.com"]
+    }'
+```
+Для авторизации(получите токен в ответе - дальнейшие запросы доступны только с ним)
+```
+curl -X POST "http://localhost:8080/api/login" \
+    -H "Content-Type: application/json" \
+    -d '{
+        "username": "login",
+        "password": "password"
+    }'
+```
+Для прочих запросов, используйте токен в запросе, например
+```
+curl "http://localhost:8080/api/users" \
+    -H "Authorization: Bearer YOUR_TOKEN_HERE"
+    
+curl -X PUT "http://localhost:8080/api/users/1" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+    -d '{
+        "birthDate": "2000-01-01",
+        "firstName": "Name",
+        "lastName": "LastName",
+        "surname": "Surname"
+    }'
+```
+##### В postman: #####
+Набор основных команд
+``` 
+localhost:8080/api/users
+localhost:8080/api/users/1/phone-numbers/1
+localhost:8080/api/users?phoneNumberAll=&firstNameCont=&lastNameCont=&surnameCont=&emailAll=&birthDateGt=2000-01-01&pageNumber=1
+```
+
+#### Дополнительная информация
+Тестирование
+```
+localhost:8080/api/users
+
+
+```
+Запросы для тестирования в Postman или подобнвх серверах\ с помощью утилиты curl
+```
+```
