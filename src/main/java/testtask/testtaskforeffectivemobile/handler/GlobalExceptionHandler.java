@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import testtask.testtaskforeffectivemobile.exeption.EmailAlreadyExistsException;
+import testtask.testtaskforeffectivemobile.exeption.InsufficientFundsException;
 import testtask.testtaskforeffectivemobile.exeption.LastEmailContactException;
 import testtask.testtaskforeffectivemobile.exeption.LastPhoneNumberContactException;
 import testtask.testtaskforeffectivemobile.exeption.LoginAlreadyExistsException;
@@ -51,5 +52,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+    @ExceptionHandler(InsufficientFundsException.class)
+    public ResponseEntity<String> handleInsufficientFundsException(InsufficientFundsException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 }

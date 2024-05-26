@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import testtask.testtaskforeffectivemobile.model.BankAccount;
 import testtask.testtaskforeffectivemobile.repository.BankAccountRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -19,10 +20,12 @@ public class BalanceUpdateService {
         List<BankAccount> accounts = bankAccountRepository.findAll();
 
         accounts.forEach((BankAccount account) -> {
-                double updatedBalance = account.getBalance() * 1.05;
-                double maxBalance = account.getInitialDeposit() * 2.07;
-                account.setBalance(Math.min(updatedBalance, maxBalance));
-                bankAccountRepository.save(account);
+            BigDecimal updatedBalance = account.getBalance().multiply(new BigDecimal("1.05"));
+            BigDecimal maxBalance = account.getInitialDeposit().multiply(new BigDecimal("2.07"));
+            BigDecimal newBalance = updatedBalance.compareTo(maxBalance) > 0 ? maxBalance : updatedBalance;
+
+            account.setBalance(newBalance);
+            bankAccountRepository.save(account);
         });
     }
 }

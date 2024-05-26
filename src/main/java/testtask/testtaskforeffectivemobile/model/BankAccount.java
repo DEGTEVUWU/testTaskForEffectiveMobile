@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -21,9 +22,9 @@ public class BankAccount implements BaseEntity {
     private Long id;
 
     @NotBlank
-    private Double balance;
+    private BigDecimal balance;
 
-    private Double initialDeposit;
+    private BigDecimal initialDeposit;
 
     @CreatedDate
     private LocalDate createdAt;

@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import testtask.testtaskforeffectivemobile.dto.TransferRequestDTO;
 import testtask.testtaskforeffectivemobile.dto.user.UserCreateDTO;
 import testtask.testtaskforeffectivemobile.dto.user.UserDTO;
 import testtask.testtaskforeffectivemobile.dto.user.UserParamsDTO;
 import testtask.testtaskforeffectivemobile.dto.user.UserUpdateDTO;
+import testtask.testtaskforeffectivemobile.service.BankAccountService;
 import testtask.testtaskforeffectivemobile.service.UserService;
 import testtask.testtaskforeffectivemobile.utils.UserUtils;
 
@@ -36,6 +38,7 @@ public class UserController {
     private final UserService userService;
     private final UserUtils userUtils;
     private static final String CURRENT_USER = "@userUtils.getCurrentUser().getId() == #id";
+    private final BankAccountService bankAccountService;
 
     @GetMapping(path = "")
     @ResponseStatus(HttpStatus.OK)
@@ -55,6 +58,15 @@ public class UserController {
         throws NoSuchAlgorithmException, InvalidKeySpecException {
         UserDTO user = userService.create(userData);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+    @PostMapping("/{id}/bankAccount/transfer")
+    @PreAuthorize(CURRENT_USER)
+    public ResponseEntity<?> transferMoney(
+        @RequestBody TransferRequestDTO transferRequestDTO,
+        @PathVariable Long id
+    ) {
+        bankAccountService.transfer(transferRequestDTO);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping(path = "/{id}")

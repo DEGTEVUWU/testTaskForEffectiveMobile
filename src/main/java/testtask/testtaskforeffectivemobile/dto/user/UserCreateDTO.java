@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -20,7 +21,7 @@ public class UserCreateDTO {
     @NotBlank
     private String password;
     @NotBlank
-    private Double balance;
+    private BigDecimal balance;
     @NotBlank
     private Set<String> phoneNumber;
     @NotBlank

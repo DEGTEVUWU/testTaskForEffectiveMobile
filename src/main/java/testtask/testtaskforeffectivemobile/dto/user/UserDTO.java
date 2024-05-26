@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.openapitools.jackson.nullable.JsonNullable;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -21,7 +22,7 @@ public class UserDTO {
     private JsonNullable<String> surname;
     private JsonNullable<LocalDate> birthDate;
     private JsonNullable<String> login;
-    private JsonNullable<Double> balance;
+    private JsonNullable<BigDecimal> balance;
     private JsonNullable<Set<String>> phoneNumber;
     private JsonNullable<Set<String>> email;
 }

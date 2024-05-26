@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import testtask.testtaskforeffectivemobile.dto.AuthRequest;
+import testtask.testtaskforeffectivemobile.dto.AuthRequestDTO;
 import testtask.testtaskforeffectivemobile.utils.JWTUtils;
 
 @RestController
@@ -24,7 +24,7 @@ public class AuthenticationController {
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
-    public String create(@RequestBody AuthRequest authRequest) {
+    public String create(@RequestBody AuthRequestDTO authRequest) {
         var authentication = new UsernamePasswordAuthenticationToken(
             authRequest.getUsername(), authRequest.getPassword());
 
