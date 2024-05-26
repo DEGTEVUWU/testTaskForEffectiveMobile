@@ -1,6 +1,11 @@
 package testtask.testtaskforeffectivemobile.service;
 
+import ch.qos.logback.core.joran.spi.NoAutoStart;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,6 +41,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserService implements UserDetailsManager {
     private final UserRepository userRepository;
     private final EmailRepository emailRepository;
@@ -52,10 +58,8 @@ public class UserService implements UserDetailsManager {
     public Page<UserDTO> getAll(UserParamsDTO userParamsDTO, int pageNumber) {
         Specification<User> spec = userSpecification.build(userParamsDTO);
         Page<User> users = userRepository.findAll(spec, PageRequest.of(pageNumber - 1, 10));
-//        List<UserDTO> result = users.stream()
-//            .map(userMapper::toDTO)
-//            .collect(Collectors.toList());
         Page<UserDTO> result = users.map(userMapper::toDTO);
+        log.info("Вывели первую страницу с юзерами дто на экран");
         return result;
     }
 

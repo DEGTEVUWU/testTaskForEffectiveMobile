@@ -1,6 +1,10 @@
 package testtask.testtaskforeffectivemobile.service;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import testtask.testtaskforeffectivemobile.dto.TransferRequestDTO;
@@ -19,8 +23,8 @@ import java.math.BigDecimal;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class BankAccountService {
-
     private BankAccountRepository bankAccountRepository;
     private BankAccountMapper bankAccountMapper;
 

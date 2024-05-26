@@ -1,15 +1,22 @@
 package testtask.testtaskforeffectivemobile.specification;
 
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import testtask.testtaskforeffectivemobile.dto.user.UserParamsDTO;
 import testtask.testtaskforeffectivemobile.model.User;
+import testtask.testtaskforeffectivemobile.service.UserService;
 
 import java.time.LocalDate;
 
 @Component
+@Slf4j
 public class UserSpecification {
+
     public Specification<User> build(UserParamsDTO params) {
+        log.info("Сделали спецификацию, отдали в сервис");
         return withPhoneNumberAll(params.getPhoneNumberAll())
             .and(withFirstNameCont(params.getFirstNameCont()))
             .and(withLastNameCont(params.getLastNameCont()))

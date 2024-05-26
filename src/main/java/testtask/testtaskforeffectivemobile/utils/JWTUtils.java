@@ -1,6 +1,7 @@
 package testtask.testtaskforeffectivemobile.utils;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -11,6 +12,7 @@ import java.time.temporal.ChronoUnit;
 
 @Component
 @AllArgsConstructor
+@Slf4j
 public class JWTUtils {
     private final JwtEncoder encoder;
 

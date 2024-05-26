@@ -1,6 +1,10 @@
 package testtask.testtaskforeffectivemobile.service;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import testtask.testtaskforeffectivemobile.dto.email.EmailDTO;
@@ -18,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class EmailService {
     private EmailRepository emailRepository;
     private EmailMapper emailMapper;

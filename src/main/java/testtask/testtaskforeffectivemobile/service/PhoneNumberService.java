@@ -1,15 +1,15 @@
 package testtask.testtaskforeffectivemobile.service;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
-import testtask.testtaskforeffectivemobile.dto.email.EmailDTO;
 import testtask.testtaskforeffectivemobile.dto.phoneNumber.PhoneNumberDTO;
-import testtask.testtaskforeffectivemobile.exeption.EmailAlreadyExistsException;
 import testtask.testtaskforeffectivemobile.exeption.PhoneNumberAlreadyExistsException;
 import testtask.testtaskforeffectivemobile.mapper.PhoneNumberMapper;
-import testtask.testtaskforeffectivemobile.model.Email;
 import testtask.testtaskforeffectivemobile.model.PhoneNumber;
 import testtask.testtaskforeffectivemobile.repository.PhoneNumberRepository;
 
@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class PhoneNumberService {
     private PhoneNumberRepository phoneNumberRepository;
     private PhoneNumberMapper phoneNumberMapper;

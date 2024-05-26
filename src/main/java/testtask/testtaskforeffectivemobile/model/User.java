@@ -1,6 +1,7 @@
 package testtask.testtaskforeffectivemobile.model;
 
 import jakarta.persistence.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import testtask.testtaskforeffectivemobile.model.Email;
@@ -18,6 +19,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Slf4j
 @Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
 public class User implements BaseEntity, UserDetails {
