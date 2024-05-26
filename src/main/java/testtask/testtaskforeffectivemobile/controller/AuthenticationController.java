@@ -19,7 +19,9 @@ import testtask.testtaskforeffectivemobile.utils.JWTUtils;
 @AllArgsConstructor
 @Slf4j
 public class AuthenticationController {
+    @Autowired
     private JWTUtils jwtUtils;
+    @Autowired
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/login")

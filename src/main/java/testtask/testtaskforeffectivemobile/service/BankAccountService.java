@@ -19,6 +19,7 @@ import testtask.testtaskforeffectivemobile.model.User;
 import testtask.testtaskforeffectivemobile.repository.BankAccountRepository;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -62,4 +63,19 @@ public class BankAccountService {
             throw new InsufficientFundsException(fromAccount.getId());
         }
     }
+
+    public List<BankAccountDTO> getAll() {
+        var bankAccounts = bankAccountRepository.findAll();
+        var result = bankAccounts.stream()
+            .map(bankAccountMapper::toDTO)
+            .toList();
+        return result;
+    }
+    public BankAccountDTO findById(Long id) {
+        var bankAccount = bankAccountRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("BankAccount with id " + id + " not found!"));
+        var bankAccountDTO = bankAccountMapper.toDTO(bankAccount);
+        return bankAccountDTO;
+    }
 }
+

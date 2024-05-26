@@ -9,10 +9,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import testtask.testtaskforeffectivemobile.dto.phoneNumber.PhoneNumberDTO;
 import testtask.testtaskforeffectivemobile.exeption.PhoneNumberAlreadyExistsException;
+import testtask.testtaskforeffectivemobile.exeption.ResourceNotFoundException;
 import testtask.testtaskforeffectivemobile.mapper.PhoneNumberMapper;
 import testtask.testtaskforeffectivemobile.model.PhoneNumber;
 import testtask.testtaskforeffectivemobile.repository.PhoneNumberRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,5 +48,20 @@ public class PhoneNumberService {
         PhoneNumber phoneNumberModel = phoneNumberMapper.toModel(phoneNumber);
         phoneNumberRepository.save(phoneNumberModel);
         return phoneNumberMapper.toDTO(phoneNumberModel);
+    }
+
+    public List<PhoneNumberDTO> getAll() {
+        var phoneNumbers = phoneNumberRepository.findAll();
+        var result = phoneNumbers.stream()
+            .map(phoneNumberMapper::toDTO)
+            .toList();
+        return result;
+    }
+
+    public PhoneNumberDTO findById(Long id) {
+        var phoneNumber = phoneNumberRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("PhoneNumber with id " + id + " not found!"));
+        var phoneNumberDTO = phoneNumberMapper.toDTO(phoneNumber);
+        return phoneNumberDTO;
     }
 }
