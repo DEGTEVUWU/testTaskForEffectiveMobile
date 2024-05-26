@@ -1,4 +1,4 @@
 package testtask.testtaskforeffectivemobile.dto.bankAccount;
 
-public class BankAccountDTO {
-}
+//public class BankAccountDTO {
+//}

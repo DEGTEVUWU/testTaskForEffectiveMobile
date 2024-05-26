@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import testtask.testtaskforeffectivemobile.dto.TransferRequestDTO;
 import testtask.testtaskforeffectivemobile.dto.bankAccount.BankAccountCreateDTO;
 import testtask.testtaskforeffectivemobile.dto.bankAccount.BankAccountDTO;
-import testtask.testtaskforeffectivemobile.dto.bankAccount.BankAccountUpdateDTO;
 import testtask.testtaskforeffectivemobile.dto.user.UserCreateDTO;
 import testtask.testtaskforeffectivemobile.exeption.InsufficientFundsException;
 import testtask.testtaskforeffectivemobile.exeption.ResourceNotFoundException;

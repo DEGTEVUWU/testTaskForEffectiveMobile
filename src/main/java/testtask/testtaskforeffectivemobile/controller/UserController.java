@@ -50,7 +50,6 @@ public class UserController {
     ) {
         Page<UserDTO> users = userService.getAll(userParamsDTO, pageNumber);
         return ResponseEntity.ok()
-//            .header("X-Total-Count", String.valueOf(users.size()))
             .body(users);
     }
 

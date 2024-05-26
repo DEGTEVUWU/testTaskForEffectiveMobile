@@ -1,6 +1,5 @@
 package testtask.testtaskforeffectivemobile.controller;
 
-
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,9 +19,7 @@ import testtask.testtaskforeffectivemobile.utils.JWTUtils;
 @AllArgsConstructor
 @Slf4j
 public class AuthenticationController {
-    @Autowired
     private JWTUtils jwtUtils;
-    @Autowired
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
