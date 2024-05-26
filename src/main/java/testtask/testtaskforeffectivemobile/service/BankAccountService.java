@@ -21,6 +21,7 @@ public class BankAccountService {
     public BankAccountDTO create(User user, Double balance) {
         BankAccount bankAccount = new BankAccount();
         bankAccount.setBalance(balance);
+        bankAccount.setInitialDeposit(balance);
         bankAccountRepository.save(bankAccount);
         user.setBankAccount(bankAccount);
         return bankAccountMapper.toDTO(bankAccount);

@@ -23,6 +23,8 @@ public class BankAccount implements BaseEntity {
     @NotBlank
     private Double balance;
 
+    private Double initialDeposit;
+
     @CreatedDate
     private LocalDate createdAt;
 
