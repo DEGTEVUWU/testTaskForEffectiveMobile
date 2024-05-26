@@ -2,6 +2,9 @@ package testtask.testtaskforeffectivemobile.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,6 +12,7 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 import testtask.testtaskforeffectivemobile.dto.user.UserCreateDTO;
 import testtask.testtaskforeffectivemobile.dto.user.UserDTO;
+import testtask.testtaskforeffectivemobile.dto.user.UserParamsDTO;
 import testtask.testtaskforeffectivemobile.dto.user.UserUpdateDTO;
 import testtask.testtaskforeffectivemobile.exeption.LastEmailContactException;
 import testtask.testtaskforeffectivemobile.exeption.LoginAlreadyExistsException;
@@ -23,10 +27,12 @@ import testtask.testtaskforeffectivemobile.model.User;
 import testtask.testtaskforeffectivemobile.repository.EmailRepository;
 import testtask.testtaskforeffectivemobile.repository.PhoneNumberRepository;
 import testtask.testtaskforeffectivemobile.repository.UserRepository;
+import testtask.testtaskforeffectivemobile.specification.UserSpecification;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -41,12 +47,14 @@ public class UserService implements UserDetailsManager {
     private final PhoneNumberService phoneNumberService;
     private final EmailService emailService;
     private final BankAccountService bankAccountService;
+    private final UserSpecification userSpecification;
 
-    public List<UserDTO> getAll() {
-        var users = userRepository.findAll();
-        var result = users.stream()
+    public List<UserDTO> getAll(UserParamsDTO userParamsDTO) {
+        Specification<User> spec = userSpecification.build(userParamsDTO);
+        List<User> users = userRepository.findAll(spec);
+        List<UserDTO> result = users.stream()
             .map(userMapper::toDTO)
-            .toList();
+            .collect(Collectors.toList());
         return result;
     }
 

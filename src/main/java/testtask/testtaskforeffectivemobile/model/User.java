@@ -31,7 +31,7 @@ public class User implements BaseEntity, UserDetails {
 
     private String surname;
 
-    private LocalDate dateOfBirth;
+    private LocalDate birthDate;
 
     @Column(unique = true)
     @OneToMany(cascade = CascadeType.ALL)
