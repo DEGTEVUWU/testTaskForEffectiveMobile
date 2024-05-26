@@ -39,10 +39,13 @@ public class UserController {
 
     @GetMapping(path = "")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<UserDTO>> index(@ModelAttribute UserParamsDTO userParamsDTO) {
-        List<UserDTO> users = userService.getAll(userParamsDTO);
+    public ResponseEntity<Page<UserDTO>> index(
+        @ModelAttribute UserParamsDTO userParamsDTO,
+        @RequestParam(defaultValue = "1") int pageNumber
+    ) {
+        Page<UserDTO> users = userService.getAll(userParamsDTO, pageNumber);
         return ResponseEntity.ok()
-            .header("X-Total-Count", String.valueOf(users.size()))
+//            .header("X-Total-Count", String.valueOf(users.size()))
             .body(users);
     }
 

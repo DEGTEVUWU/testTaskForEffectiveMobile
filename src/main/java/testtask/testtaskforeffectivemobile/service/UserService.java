@@ -49,12 +49,13 @@ public class UserService implements UserDetailsManager {
     private final BankAccountService bankAccountService;
     private final UserSpecification userSpecification;
 
-    public List<UserDTO> getAll(UserParamsDTO userParamsDTO) {
+    public Page<UserDTO> getAll(UserParamsDTO userParamsDTO, int pageNumber) {
         Specification<User> spec = userSpecification.build(userParamsDTO);
-        List<User> users = userRepository.findAll(spec);
-        List<UserDTO> result = users.stream()
-            .map(userMapper::toDTO)
-            .collect(Collectors.toList());
+        Page<User> users = userRepository.findAll(spec, PageRequest.of(pageNumber - 1, 10));
+//        List<UserDTO> result = users.stream()
+//            .map(userMapper::toDTO)
+//            .collect(Collectors.toList());
+        Page<UserDTO> result = users.map(userMapper::toDTO);
         return result;
     }
 
