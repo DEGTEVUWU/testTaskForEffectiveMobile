@@ -1,10 +1,9 @@
-### Тестовое задание для компании Effective Mobile
+# Тестовое задание для компании Effective Mobile
 [![Maintainability](https://api.codeclimate.com/v1/badges/df4c05187ab8814f82a8/maintainability)](https://codeclimate.com/github/DEGTEVUWU/testTaskForEffectiveMobile/maintainability)
 
 ## Описание ##
 
 Программа(компонент) для создания пользователя с уникальным банковским аккаунтом, телефонными номерами и электронными почтами. Для увеличения кол-ва денег на счете и переводов между счетами.
-
 #### Текст тестового задания указан в самом конце файла
 
 ### Реализовано 
