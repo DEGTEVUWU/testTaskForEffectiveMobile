@@ -42,9 +42,15 @@
 
 
 ### Использование локально ###
+
+Для локального запуска небходимо сгенерировать приватный и публичный rsa-ключи в папке `/src/main/resources/certs`, все необходимые команды ниже
 ##### В терминале: #####
 ```
 git clone git@github.com:DEGTEVUWU/testTaskForEffectiveMobile.git
+cd testTaskForEffectiveMobile/src/main/resources/certs
+openssl genpkey -out private.pem -algorithm RSA -pkeyopt rsa_keygen_bits:2048
+openssl rsa -in private.pem -pubout -out public.pem
+cd 
 cd testTaskForEffectiveMobile
 make spring 
 ```
