@@ -5,7 +5,7 @@ import lombok.Getter;
 import net.datafaker.Faker;
 import org.springframework.stereotype.Component;
 import testtask.testtaskforeffectivemobile.model.BankAccount;
-import testtask.testtaskforeffectivemobile.model.Email;
+import testtask.testtaskforeffectivemobile.model.EmailAddress;
 import testtask.testtaskforeffectivemobile.model.PhoneNumber;
 import testtask.testtaskforeffectivemobile.model.User;
 import testtask.testtaskforeffectivemobile.repository.BankAccountRepository;
@@ -29,7 +29,7 @@ public class CreateTestUser {
 
     public User createTestUser() {
         User testUser = new User();
-        Email testEmail = new Email();
+        EmailAddress testEmail = new EmailAddress();
         PhoneNumber testPhoneNumber = new PhoneNumber();
         BankAccount testBankAccount = new BankAccount();
 

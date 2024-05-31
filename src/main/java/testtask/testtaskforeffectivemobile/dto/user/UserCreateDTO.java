@@ -1,6 +1,7 @@
 package testtask.testtaskforeffectivemobile.dto.user;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,8 +18,10 @@ public class UserCreateDTO {
     private LocalDate birthDate;
 
     @NotBlank
+    @Size(min = 2)
     private String login;
     @NotBlank
+    @Size(min = 8, max = 24)
     private String password;
     @NotBlank
     private BigDecimal balance;

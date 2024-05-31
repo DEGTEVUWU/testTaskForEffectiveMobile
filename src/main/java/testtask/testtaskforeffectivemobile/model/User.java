@@ -4,10 +4,8 @@ import jakarta.persistence.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import testtask.testtaskforeffectivemobile.model.Email;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -37,7 +35,7 @@ public class User implements BaseEntity, UserDetails {
 
     @Column(unique = true)
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
-    private Set<Email> email;
+    private Set<EmailAddress> email;
 
     @Column(unique = true)
     private String login;

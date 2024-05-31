@@ -11,7 +11,7 @@ import testtask.testtaskforeffectivemobile.dto.email.EmailDTO;
 import testtask.testtaskforeffectivemobile.exeption.EmailAlreadyExistsException;
 import testtask.testtaskforeffectivemobile.exeption.ResourceNotFoundException;
 import testtask.testtaskforeffectivemobile.mapper.EmailMapper;
-import testtask.testtaskforeffectivemobile.model.Email;
+import testtask.testtaskforeffectivemobile.model.EmailAddress;
 import testtask.testtaskforeffectivemobile.model.User;
 import testtask.testtaskforeffectivemobile.repository.EmailRepository;
 
@@ -30,11 +30,11 @@ public class EmailService {
     public Set<EmailDTO> createOrGetExisting(Set<String> emails) {
         return emails.stream()
             .map(e -> {
-                Optional<Email> existingEmail = emailRepository.findByEmail(e);
+                Optional<EmailAddress> existingEmail = emailRepository.findByEmail(e);
                 if (existingEmail.isPresent()) {
                     throw new EmailAlreadyExistsException("Email already exists: " + e);
                 }
-                Email email = new Email();
+                EmailAddress email = new EmailAddress();
                 email.setEmail(e);
                 emailRepository.save(email);
                 return emailMapper.toDTO(email);
@@ -45,7 +45,7 @@ public class EmailService {
         if(emailRepository.findByEmail(email).isPresent()) {
             throw new DataIntegrityViolationException("Email is already in use: " + email);
         }
-        Email emailModel = emailMapper.toModel(email);
+        EmailAddress emailModel = emailMapper.toModel(email);
         emailRepository.save(emailModel);
         return emailMapper.toDTO(emailModel);
     }

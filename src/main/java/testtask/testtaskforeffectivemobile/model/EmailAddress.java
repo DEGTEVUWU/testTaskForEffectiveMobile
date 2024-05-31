@@ -7,8 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+
 import java.time.LocalDate;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -16,12 +16,13 @@ import java.util.Set;
 @Entity
 @Table(name = "emails")
 @EntityListeners(AuditingEntityListener.class)
-public class Email {
+public class EmailAddress {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String email;
 
     @CreatedDate

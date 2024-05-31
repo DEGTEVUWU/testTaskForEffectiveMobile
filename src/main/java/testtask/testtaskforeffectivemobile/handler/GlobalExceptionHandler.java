@@ -12,6 +12,7 @@ import testtask.testtaskforeffectivemobile.exeption.LastPhoneNumberContactExcept
 import testtask.testtaskforeffectivemobile.exeption.LoginAlreadyExistsException;
 import testtask.testtaskforeffectivemobile.exeption.PhoneNumberAlreadyExistsException;
 import testtask.testtaskforeffectivemobile.exeption.ResourceNotFoundException;
+import testtask.testtaskforeffectivemobile.exeption.ValidationException;
 
 import java.util.NoSuchElementException;
 
@@ -55,6 +56,10 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(InsufficientFundsException.class)
     public ResponseEntity<String> handleInsufficientFundsException(InsufficientFundsException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<String> handleInsufficientFundsException(ValidationException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 }

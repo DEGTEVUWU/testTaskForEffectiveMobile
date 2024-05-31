@@ -18,7 +18,7 @@ import testtask.testtaskforeffectivemobile.dto.user.UserDTO;
 import testtask.testtaskforeffectivemobile.dto.user.UserUpdateDTO;
 import testtask.testtaskforeffectivemobile.exeption.ResourceNotFoundException;
 import testtask.testtaskforeffectivemobile.model.BankAccount;
-import testtask.testtaskforeffectivemobile.model.Email;
+import testtask.testtaskforeffectivemobile.model.EmailAddress;
 import testtask.testtaskforeffectivemobile.model.PhoneNumber;
 import testtask.testtaskforeffectivemobile.model.User;
 import testtask.testtaskforeffectivemobile.repository.EmailRepository;
@@ -60,7 +60,7 @@ public abstract class UserMapper {
      * речь о тлф номерах  и емайлах
      */
     @Named("EmailsToModel")
-    public Set<Email> EmailsToModel(Set<String> emailsStr) {
+    public Set<EmailAddress> EmailsToModel(Set<String> emailsStr) {
         if (emailsStr.isEmpty()) {
             throw new ResourceNotFoundException("EmailsStr set is null or empty!");
         }
@@ -79,12 +79,12 @@ public abstract class UserMapper {
      * речь о тлф номерах  и емайлах
      */
     @Named("ModelToEmails")
-    public Set<String> ModelToEmails(Set<Email> emails) {
+    public Set<String> ModelToEmails(Set<EmailAddress> emails) {
         if (emails.isEmpty()) {
             throw new ResourceNotFoundException("Emails is null or empty!");
         }
         return emails.stream()
-            .map(Email::getEmail)
+            .map(EmailAddress::getEmail)
             .collect(Collectors.toSet());
     }
     @Named("ModelToPhoneNumbers")

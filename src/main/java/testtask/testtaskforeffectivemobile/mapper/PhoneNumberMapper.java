@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import testtask.testtaskforeffectivemobile.dto.bankAccount.BankAccountDTO;
 import testtask.testtaskforeffectivemobile.dto.phoneNumber.PhoneNumberDTO;
 import testtask.testtaskforeffectivemobile.model.BankAccount;
-import testtask.testtaskforeffectivemobile.model.Email;
 import testtask.testtaskforeffectivemobile.model.PhoneNumber;
 import testtask.testtaskforeffectivemobile.repository.PhoneNumberRepository;
 import testtask.testtaskforeffectivemobile.service.PhoneNumberService;

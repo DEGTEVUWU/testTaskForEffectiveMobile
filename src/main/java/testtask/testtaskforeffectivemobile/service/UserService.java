@@ -1,12 +1,8 @@
 package testtask.testtaskforeffectivemobile.service;
 
-import ch.qos.logback.core.joran.spi.NoAutoStart;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -21,23 +17,23 @@ import testtask.testtaskforeffectivemobile.dto.user.UserParamsDTO;
 import testtask.testtaskforeffectivemobile.dto.user.UserUpdateDTO;
 import testtask.testtaskforeffectivemobile.exeption.LastEmailContactException;
 import testtask.testtaskforeffectivemobile.exeption.LoginAlreadyExistsException;
-import testtask.testtaskforeffectivemobile.exeption.PhoneNumberAlreadyExistsException;
 import testtask.testtaskforeffectivemobile.exeption.ResourceNotFoundException;
+import testtask.testtaskforeffectivemobile.exeption.ValidationException;
 import testtask.testtaskforeffectivemobile.mapper.EmailMapper;
 import testtask.testtaskforeffectivemobile.mapper.PhoneNumberMapper;
 import testtask.testtaskforeffectivemobile.mapper.UserMapper;
-import testtask.testtaskforeffectivemobile.model.Email;
+import testtask.testtaskforeffectivemobile.model.EmailAddress;
 import testtask.testtaskforeffectivemobile.model.PhoneNumber;
 import testtask.testtaskforeffectivemobile.model.User;
 import testtask.testtaskforeffectivemobile.repository.EmailRepository;
 import testtask.testtaskforeffectivemobile.repository.PhoneNumberRepository;
 import testtask.testtaskforeffectivemobile.repository.UserRepository;
 import testtask.testtaskforeffectivemobile.specification.UserSpecification;
+import testtask.testtaskforeffectivemobile.validation.Validation;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -54,8 +50,17 @@ public class UserService implements UserDetailsManager {
     private final EmailService emailService;
     private final BankAccountService bankAccountService;
     private final UserSpecification userSpecification;
+    private final Validation validation;
 
-    public Page<UserDTO> getAll(UserParamsDTO userParamsDTO, int pageNumber) {
+    public List<UserDTO> getAll() {
+        var users = userRepository.findAll();
+        var result = users.stream()
+            .map(userMapper::toDTO)
+            .toList();
+        return result;
+    }
+
+    public Page<UserDTO> getAllByParameters(UserParamsDTO userParamsDTO, int pageNumber) {
         Specification<User> spec = userSpecification.build(userParamsDTO);
         Page<User> users = userRepository.findAll(spec, PageRequest.of(pageNumber - 1, 10));
         Page<UserDTO> result = users.map(userMapper::toDTO);
@@ -64,6 +69,8 @@ public class UserService implements UserDetailsManager {
     }
 
     public UserDTO create(UserCreateDTO userData) {
+        validate(userData);
+
         createDependencies(userData);
         checkingLoginAvailability(userData);
 
@@ -83,6 +90,8 @@ public class UserService implements UserDetailsManager {
     }
 
     public UserDTO update(UserUpdateDTO userData, Long id) {
+        validate(userData);
+
         var user = userRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found!"));
         userMapper.update(userData, user);
@@ -98,6 +107,8 @@ public class UserService implements UserDetailsManager {
      * с имеющимся сетом(добавляем)
      */
     public UserDTO updateUserContactInfo(Long userId, UserUpdateDTO userUpdateDTO) {
+        validate(userUpdateDTO);
+
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
 
@@ -118,8 +129,8 @@ public class UserService implements UserDetailsManager {
             emailSetString
                 .forEach(emailService::addEmail);
 
-            Set<Email> newEmailSet = emailMapper.mapStringsToEmailEntities(emailSetString);
-            Set<Email> oldEmailSet = user.getEmail();
+            Set<EmailAddress> newEmailSet = emailMapper.mapStringsToEmailEntities(emailSetString);
+            Set<EmailAddress> oldEmailSet = user.getEmail();
             oldEmailSet.addAll(newEmailSet);
             user.setEmail(oldEmailSet);
         }
@@ -133,7 +144,7 @@ public class UserService implements UserDetailsManager {
 
 
     public void deleteEmail(Long userId, String emailValue) {
-        Email email = emailRepository.findByEmail(emailValue)
+        EmailAddress email = emailRepository.findByEmail(emailValue)
             .orElseThrow(() -> new ResourceNotFoundException("Email not found"));
         deleteEmail(userId, email.getId());
     }
@@ -171,7 +182,6 @@ public class UserService implements UserDetailsManager {
     private void createDependencies(UserCreateDTO userCreateDTO) {
         phoneNumberService.createOrGetExisting(userCreateDTO.getPhoneNumber());
         emailService.createOrGetExisting(userCreateDTO.getEmail());
-//        bankAccountService.create(userCreateDTO.getBalance());
     }
 
     private void checkingLoginAvailability(UserCreateDTO userData) {
@@ -180,6 +190,17 @@ public class UserService implements UserDetailsManager {
             throw new LoginAlreadyExistsException("User with login " + userData.getLogin()
                 + " already exists! Change login!");
         }
+    }
+    private void validate(UserCreateDTO userData) {
+        validation.isValidLogin(userData.getLogin());
+        validation.isValidPassword(userData.getPassword());
+        validation.isValidBalance(userData.getBalance());
+        validation.isValidEmail(userData.getEmail());
+        validation.isValidPhoneNumber(userData.getPhoneNumber());
+    }
+    private void validate(UserUpdateDTO userData) {
+        validation.isValidEmail(userData.getEmail().get());
+        validation.isValidPhoneNumber(userData.getPhoneNumber().get());
     }
 
     @Override

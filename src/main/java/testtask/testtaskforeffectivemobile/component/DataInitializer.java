@@ -6,7 +6,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import net.datafaker.Faker;
 import testtask.testtaskforeffectivemobile.model.BankAccount;
-import testtask.testtaskforeffectivemobile.model.Email;
+import testtask.testtaskforeffectivemobile.model.EmailAddress;
 import testtask.testtaskforeffectivemobile.model.PhoneNumber;
 import testtask.testtaskforeffectivemobile.model.User;
 import testtask.testtaskforeffectivemobile.repository.BankAccountRepository;
@@ -47,8 +47,8 @@ public class DataInitializer implements ApplicationRunner {
         }
     }
 
-    public Email createEmail() {
-        Email email = new Email();
+    public EmailAddress createEmail() {
+        EmailAddress email = new EmailAddress();
         email.setEmail(faker.internet().emailAddress());
         return email;
     }

@@ -1,7 +1,6 @@
 package testtask.testtaskforeffectivemobile.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import testtask.testtaskforeffectivemobile.model.Email;
 import testtask.testtaskforeffectivemobile.model.PhoneNumber;
 
 import java.util.Optional;

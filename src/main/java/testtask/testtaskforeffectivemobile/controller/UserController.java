@@ -44,11 +44,18 @@ public class UserController {
 
     @GetMapping(path = "")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Page<UserDTO>> index(
+    public ResponseEntity<List<UserDTO>> index() {
+        List<UserDTO> users = userService.getAll();
+        return ResponseEntity.ok()
+            .body(users);
+    }
+    @GetMapping(path = "/search")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Page<UserDTO>> search(
         @ModelAttribute UserParamsDTO userParamsDTO,
         @RequestParam(defaultValue = "1") int pageNumber
     ) {
-        Page<UserDTO> users = userService.getAll(userParamsDTO, pageNumber);
+        Page<UserDTO> users = userService.getAllByParameters(userParamsDTO, pageNumber);
         return ResponseEntity.ok()
             .body(users);
     }
