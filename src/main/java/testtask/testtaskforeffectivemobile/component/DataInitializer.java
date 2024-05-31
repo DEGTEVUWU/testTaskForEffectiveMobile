@@ -13,7 +13,6 @@ import testtask.testtaskforeffectivemobile.repository.BankAccountRepository;
 import testtask.testtaskforeffectivemobile.repository.EmailRepository;
 import testtask.testtaskforeffectivemobile.repository.PhoneNumberRepository;
 import testtask.testtaskforeffectivemobile.repository.UserRepository;
-
 import java.math.BigDecimal;
 import java.util.Set;
 
@@ -65,3 +64,4 @@ public class DataInitializer implements ApplicationRunner {
         return bankAccount;
     }
 }
+
