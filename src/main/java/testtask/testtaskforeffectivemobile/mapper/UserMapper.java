@@ -54,7 +54,9 @@ public abstract class UserMapper {
     @Mapping(source = "phoneNumber", target = "phoneNumber", qualifiedByName = "PhoneNumbersToModel")
     public abstract void update(UserUpdateDTO dto, @MappingTarget User model);
 
-
+    @Mapping(source = "email", target = "email", qualifiedByName = "ModelToEmails")
+    @Mapping(source = "phoneNumber", target = "phoneNumber", qualifiedByName = "ModelToPhoneNumbers")
+    public abstract UserUpdateDTO toUpdateDTOForValid(User user);
     /**
      * методы для маппинга из сета строк в сет сущностей
      * речь о тлф номерах  и емайлах

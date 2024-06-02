@@ -114,6 +114,7 @@ localhost:8080/api/users/1/bankAccount/transfer
 Swagger доступен по адресу
 ``` 
 localhost:8080/swagger-ui/index.html
+localhost:8080/v3/api-docs
 ```
 
 #### Задание

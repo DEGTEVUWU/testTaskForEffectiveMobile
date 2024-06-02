@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -49,6 +51,7 @@ public class UserService implements UserDetailsManager {
     private final PhoneNumberService phoneNumberService;
     private final EmailService emailService;
     private final BankAccountService bankAccountService;
+    private final SecurityService securityService;
     private final UserSpecification userSpecification;
     private final Validation validation;
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
@@ -119,7 +122,12 @@ public class UserService implements UserDetailsManager {
         logger.info("модель юзера замапили в дто");
         return userDTO;
     }
-
+    public void updatePassword(String userName, String newPassword) {
+        User currantUser = userRepository.findByLogin(userName)
+            .orElseThrow(() -> new ResourceNotFoundException("User with userName " + userName + " not found!"));
+        currantUser.setPasswordDigest(newPassword);
+        logger.info("обновили пароль юзера");
+    }
     /**
      *
      * этот метод реализует частичное обновление (добавление новых) имейлов и телефонов в сущность юзера
@@ -253,23 +261,38 @@ public class UserService implements UserDetailsManager {
     }
 
     @Override
-    public void updateUser(UserDetails user) {
-
+    public void updateUser(UserDetails userData) {
+        var user = userRepository.findByLogin(userData.getUsername())
+            .orElseThrow(() -> new ResourceNotFoundException("User with id " + userData.getUsername() + " not found!"));
+        UserUpdateDTO userUpdateDTO = userMapper.toUpdateDTOForValid(user);
+        validate(userUpdateDTO);
+        userMapper.update(userUpdateDTO, user);
+        userRepository.save(user);
     }
 
     @Override
     public void deleteUser(String username) {
-
+        var user = userRepository.findByLogin(username)
+            .orElseThrow(() -> new ResourceNotFoundException("User with id " + username + " not found!"));
+        userRepository.delete(user);
     }
 
     @Override
     public void changePassword(String oldPassword, String newPassword) {
-
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        String username = currentUser.getName();
+        UserDetails user = loadUserByUsername(username);
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new IllegalArgumentException("Неверный старый пароль.");
+        }
+        String encodedNewPassword = passwordEncoder.encode(newPassword);
+        updatePassword(username, encodedNewPassword);
+        securityService.updateSecurityContext(username, newPassword);
     }
 
     @Override
     public boolean userExists(String username) {
-        return false;
+        return userRepository.findByLogin(username).isPresent();
     }
 
     @Override
